@@ -134,7 +134,7 @@ const Article = () => {
                         value={article.heading}
                         onChange={handleChange}
                     />
-                    <TextField
+                    {/* <TextField
                         label="Rating"
                         variant="outlined"
                         fullWidth
@@ -143,7 +143,7 @@ const Article = () => {
                         name="rating"
                         value={article.rating}
                         onChange={handleChange}
-                    />
+                    /> */}
                 </Box>
                 <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, mt: 2, mb: 2 }}>
                     <TextField

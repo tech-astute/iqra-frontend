@@ -3,7 +3,6 @@ import { lazy } from 'react';
 // project import
 import Loadable from 'components/Loadable';
 import MainLayout from 'layout/MainLayout';
-import Article from 'pages/article/Article';
 
 // render - dashboard
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard')));
@@ -16,6 +15,7 @@ const Typography = Loadable(lazy(() => import('pages/components-overview/Typogra
 const Color = Loadable(lazy(() => import('pages/components-overview/Color')));
 const Shadow = Loadable(lazy(() => import('pages/components-overview/Shadow')));
 const AntIcons = Loadable(lazy(() => import('pages/components-overview/AntIcons')));
+const Article = Loadable(lazy(() => import('pages/article/Article')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -59,7 +59,15 @@ const MainRoutes = {
         {
             path: 'article',
             element: <Article />
-        }
+        },
+        {
+            path: 'editorial',
+            element: <Article />
+        },
+        // {
+        //     path: 'course',
+        //     element: <Course />
+        // }
     ]
 };
 

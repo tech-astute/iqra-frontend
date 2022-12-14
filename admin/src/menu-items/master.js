@@ -9,9 +9,9 @@ const icons = {
 
 // ==============================|| MENU ITEMS - EXTRA PAGES ||============================== //
 
-const pages = {
-    id: 'content',
-    title: 'Content',
+const master = {
+    id: 'master',
+    title: 'Master',
     type: 'group',
     children: [
         // {
@@ -37,16 +37,8 @@ const pages = {
             url: '/master',
             icon: icons.ProfileOutlined,
             target: true
-        },
-        {
-            id: 'article1',
-            title: 'Article',
-            type: 'item',
-            url: '/article',
-            icon: icons.ProfileOutlined,
-            target: true
         }
     ]
 };
 
-export default pages;
+export default master;
