@@ -39,7 +39,7 @@
             {
                 "ignoreRestSiblings": false
             }
-        ],
+        ]
         // "prettier/prettier": [
         //     2,
         //     {
