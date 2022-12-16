@@ -8,15 +8,17 @@ import { useTheme } from '@mui/material/styles';
 import { Avatar, Chip, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material';
 
 // project import
-import { activeItem } from 'store/reducers/menu';
+import { activeItem } from '../../../../../actions/menu/menu';
 
 // ==============================|| NAVIGATION - LIST ITEM ||============================== //
 
 const NavItem = ({ item, level }) => {
     const theme = useTheme();
     const dispatch = useDispatch();
-    const menu = useSelector((state) => state.menu);
-    const { drawerOpen, openItem } = menu;
+    const openItem = useSelector((state) => state.menu.openItem);
+    const drawerOpen = useSelector((state) => state.menu.drawerOpen);
+    // console.log(menu);
+    // const { drawerOpen, openItem } = menu;
 
     let itemTarget = '_self';
     if (item.target) {

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import React from 'react';
 // material-ui
 import {
@@ -12,13 +12,178 @@ import {
     OutlinedInput,
     Checkbox,
     ListItemText,
-    Button
+    Button,
+    Stack
 } from '@mui/material';
-
+import { Cancel } from '@mui/icons-material';
+import JoditEditor from 'jodit-react';
 // project import
 import MainCard from 'components/MainCard';
 
 // ==============================|| SAMPLE PAGE ||============================== //
+const copyStringToClipboard = function (str) {
+    var el = document.createElement('textarea');
+    el.value = str;
+    el.setAttribute('readonly', '');
+    el.style = { position: 'absolute', left: '-9999px' };
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+};
+
+const facilityMergeFields = [
+    'FacilityNumber',
+    'FacilityName',
+    'Address',
+    'MapCategory',
+    'Latitude',
+    'Longitude',
+    'ReceivingPlant',
+    'TrunkLine',
+    'SiteElevation'
+];
+const inspectionMergeFields = ['InspectionCompleteDate', 'InspectionEventType'];
+const createOptionGroupElement = (mergeFields, optionGrouplabel) => {
+    let optionGroupElement = document.createElement('optgroup');
+    optionGroupElement.setAttribute('label', optionGrouplabel);
+    for (let index = 0; index < mergeFields.length; index++) {
+        let optionElement = document.createElement('option');
+        optionElement.setAttribute('class', 'merge-field-select-option');
+        optionElement.setAttribute('value', mergeFields[index]);
+        optionElement.text = mergeFields[index];
+        optionGroupElement.appendChild(optionElement);
+    }
+    return optionGroupElement;
+};
+const buttons = [
+    'undo',
+    'redo',
+    '|',
+    'bold',
+    'strikethrough',
+    'underline',
+    'italic',
+    '|',
+    'superscript',
+    'subscript',
+    '|',
+    'align',
+    '|',
+    'ul',
+    'ol',
+    'outdent',
+    'indent',
+    '|',
+    'font',
+    'fontsize',
+    'brush',
+    'paragraph',
+    '|',
+    'image',
+    'link',
+    'table',
+    '|',
+    'hr',
+    'eraser',
+    'copyformat',
+    '|',
+    'fullsize',
+    'selectall',
+    'print',
+    '|',
+    'source',
+    '|',
+    {
+        name: 'insertMergeField',
+        tooltip: 'Insert Merge Field',
+        iconURL: 'images/merge.png',
+        popup: (editor, current, self, close) => {
+            function onSelected(e) {
+                let mergeField = e.target.value;
+                if (mergeField) {
+                    console.log(mergeField);
+                    editor.selection.insertNode(editor.create.inside.fromHTML('{{' + mergeField + '}}'));
+                }
+            }
+            let divElement = editor.create.div('merge-field-popup');
+
+            let labelElement = document.createElement('label');
+            labelElement.setAttribute('class', 'merge-field-label');
+            labelElement.text = 'Merge field: ';
+            divElement.appendChild(labelElement);
+
+            let selectElement = document.createElement('select');
+            selectElement.setAttribute('class', 'merge-field-select');
+            selectElement.appendChild(createOptionGroupElement(facilityMergeFields, 'Facility'));
+            selectElement.appendChild(createOptionGroupElement(inspectionMergeFields, 'Inspection'));
+            selectElement.onchange = onSelected;
+            divElement.appendChild(selectElement);
+
+            console.log(divElement);
+            return divElement;
+        }
+    },
+    {
+        name: 'copyContent',
+        tooltip: 'Copy HTML to Clipboard',
+        iconURL: 'images/copy.png',
+        exec: function (editor) {
+            let html = editor.value;
+            copyStringToClipboard(html);
+        }
+    }
+];
+
+const editorConfig = {
+    readonly: false,
+    toolbar: true,
+    spellcheck: true,
+    language: 'en',
+    toolbarButtonSize: 'medium',
+    toolbarAdaptive: false,
+    showCharsCounter: true,
+    showWordsCounter: true,
+    showXPathInStatusbar: false,
+    askBeforePasteHTML: true,
+    askBeforePasteFromWord: true,
+    //defaultActionOnPaste: "insert_clear_html",
+    buttons: buttons,
+    uploader: {
+        insertImageAsBase64URI: true
+    },
+    width: '100%',
+    height: 400
+};
+
+const Tags = ({ data, handleDelete }) => {
+    return (
+        <Box
+            sx={{
+                background: '#1890FF',
+                borderRadius: '0.5rem',
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'row',
+                padding: '0.4rem',
+                margin: '0 0.5rem 0 0',
+                justifyContent: 'center',
+                alignContent: 'center',
+                color: '#ffffff'
+            }}
+        >
+            <Stack direction="row" gap={1}>
+                <Typography>{data}</Typography>
+                <Cancel
+                    sx={{ cursor: 'pointer' }}
+                    onClick={() => {
+                        handleDelete(data);
+                    }}
+                />
+            </Stack>
+        </Box>
+    );
+};
 
 const Article = () => {
     const ITEM_HEIGHT = 48;
@@ -84,18 +249,27 @@ const Article = () => {
     const handleOptionChange = (event) => {
         setOptionsData({ ...optionsData, [event.target.name]: event.target.value });
     };
-    const [tag, setTag] = useState([]);
+    const [subject, setSubject] = useState([]);
+    const [tags, setTags] = useState([]);
+    const tagRef = useRef();
 
-    const handleTagsChange = (event) => {
+    const handleSubjectsChange = (event) => {
         const {
             target: { value }
         } = event;
-        setTag(typeof value === 'string' ? value.split(',') : value);
-        console.log(tag);
+        setSubject(typeof value === 'string' ? value.split(',') : value);
+        console.log(subject);
     };
 
-    const handleSubjectChange = (event) => {
-        setArticle({ ...article, subject: event.target.value });
+    const handleDelete = (value) => {
+        const newtags = tags.filter((val) => val !== value);
+        setTags(newtags);
+    };
+
+    const handleAddTags = (e) => {
+        e.preventDefault();
+        setTags([...tags, tagRef.current.value]);
+        tagRef.current.value = '';
     };
 
     const handleSubmit = (event) => {
@@ -104,7 +278,7 @@ const Article = () => {
             const request = {
                 heading: article.heading,
                 rating: article.rating,
-                tags: tag,
+                // tags: tag,
                 prelims: article.prelims,
                 mains: article.mains,
                 editor: article.editor,
@@ -112,7 +286,7 @@ const Article = () => {
                 question: article.question,
                 options: optionsData,
                 answer: article.answer,
-                subject: article.subject
+                subject: subject
             };
             console.log(request);
         } catch (error) {
@@ -122,7 +296,6 @@ const Article = () => {
 
     return (
         <MainCard title="Article">
-            <form onSubmit={handleSubmit}>
                 <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, mt: 2, mb: 2 }}>
                     <TextField
                         label="Heading"
@@ -134,23 +307,33 @@ const Article = () => {
                         value={article.heading}
                         onChange={handleChange}
                     />
-                    {/* <TextField
-                        label="Rating"
-                        variant="outlined"
-                        fullWidth
-                        sx={{ ml: { sm: 1 }, mt: { xs: 2, sm: 0 } }}
-                        type="text"
-                        name="rating"
-                        value={article.rating}
-                        onChange={handleChange}
-                    /> */}
+                    <FormControl fullWidth sx={{ ml: { sm: 1 }, mt: {xs: 2, sm: 0} }}>
+                        <InputLabel id="demo-multiple-checkbox-label">Subject</InputLabel>
+                        <Select
+                            labelId="demo-multiple-checkbox-label"
+                            id="demo-multiple-checkbox"
+                            multiple
+                            value={subject}
+                            onChange={handleSubjectsChange}
+                            input={<OutlinedInput label="Subjects" />}
+                            renderValue={(selected) => selected.join(', ')}
+                            MenuProps={MenuProps}
+                        >
+                            {subjectArray.map((name) => (
+                                <MenuItem key={name} value={name}>
+                                    <Checkbox checked={subject.indexOf(name) > -1} />
+                                    <ListItemText primary={name} />
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
                 </Box>
                 <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, mt: 2, mb: 2 }}>
                     <TextField
                         label="Prelims"
                         variant="outlined"
                         fullWidth
-                        sx={{ mr: { sm: 1 } }}
+                        sx={{ mr: { sm: 1 }, backgroundColor: 'primary.lighter', borderRadius: '5px' }}
                         type="text"
                         name="prelims"
                         value={article.prelims}
@@ -160,7 +343,7 @@ const Article = () => {
                         label="Mains"
                         variant="outlined"
                         fullWidth
-                        sx={{ ml: { sm: 1 }, mt: { xs: 2, sm: 0 } }}
+                        sx={{ ml: { sm: 1 }, mt: { xs: 2, sm: 0 }, backgroundColor: 'primary.lighter', borderRadius: '5px' }}
                         type="text"
                         name="mains"
                         value={article.mains}
@@ -168,53 +351,32 @@ const Article = () => {
                     />
                 </Box>
                 <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, mt: 2, mb: 2 }}>
-                    <FormControl fullWidth sx={{ mr: { sm: 1 } }}>
-                        <InputLabel id="demo-multiple-checkbox-label">Tags</InputLabel>
-                        <Select
-                            labelId="demo-multiple-checkbox-label"
-                            id="demo-multiple-checkbox"
-                            multiple
-                            value={tag}
-                            onChange={handleTagsChange}
-                            input={<OutlinedInput label="Tags" />}
-                            renderValue={(selected) => selected.join(', ')}
-                            MenuProps={MenuProps}
-                        >
-                            {tagsArray.map((name) => (
-                                <MenuItem key={name} value={name}>
-                                    <Checkbox checked={tag.indexOf(name) > -1} />
-                                    <ListItemText primary={name} />
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
-                    <FormControl fullWidth sx={{ ml: { sm: 1 }, mt: { xs: 2, sm: 0 } }}>
-                        <InputLabel id="demo-simple-select-label">Subject</InputLabel>
-                        <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            value={article.subject}
-                            label="Subject"
-                            onChange={handleSubjectChange}
-                        >
-                            {subjectArray.map((subject) => (
-                                <MenuItem value={subject}>{subject}</MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
+                    
+                    <Box sx={{ width: '100%', maxWidth: '100%' }}>
+                        <form onSubmit={handleAddTags}>
+                            <TextField
+                                inputRef={tagRef}
+                                label="Tags"
+                                variant="outlined"
+                                placeholder={tags.length < 5 ? "Enter tags" : ""}
+                                fullWidth
+                                InputProps={{
+                                    startAdornment: (
+                                        <Box sx={{ margin: '0 0.2rem 0 0', display: 'flex', flexDirection:'row' }}>
+                                            {tags.map((data, index) => {
+                                                return <Tags data={data} handleDelete={handleDelete} key={index} />;
+                                            })}
+                                        </Box>
+                                    )
+                                }}
+                            />
+                        </form>
+                    </Box>
                 </Box>
                 <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, mt: 2, mb: 2 }}>
-                    <TextField
-                        label="Data Source"
-                        variant="outlined"
-                        fullWidth
-                        multiline
-                        rows={4}
-                        type="text"
-                        name="editor"
-                        value={article.editor}
-                        onChange={handleChange}
-                    />
+                    <Box sx={{ maxWidth: editorConfig.width, width: '100%', m: 0 }}>
+                        <JoditEditor value={article.editor} config={editorConfig} name="editor" onChange={handleChange} />
+                    </Box>
                 </Box>
                 <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, mt: 2, mb: 2 }}>
                     <TextField
@@ -296,11 +458,10 @@ const Article = () => {
                     <Box sx={{ width: '100%', ml: { sm: 1 } }} />
                 </Box>
                 <Box>
-                    <Button variant="contained" color="primary" type="submit">
+                    <Button variant="contained" color="primary" type="submit"  onClick={()=>handleSubmit}>
                         Submit
                     </Button>
                 </Box>
-            </form>
         </MainCard>
     );
 };

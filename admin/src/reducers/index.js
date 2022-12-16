@@ -1,11 +1,7 @@
-// third-party
 import { combineReducers } from 'redux';
 
-// project import
-import menu from './menu';
+import menu from './menu/menu';
 
-// ==============================|| COMBINE REDUCERS ||============================== //
-
-const reducers = combineReducers({ menu });
-
-export default reducers;
+export const reducers = combineReducers({
+    menu
+});

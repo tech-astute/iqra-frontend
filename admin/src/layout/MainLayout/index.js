@@ -13,7 +13,7 @@ import navigation from 'menu-items';
 import Breadcrumbs from 'components/@extended/Breadcrumbs';
 
 // types
-import { openDrawer } from 'store/reducers/menu';
+import { openDrawer } from '../../actions/menu/menu';
 
 // ==============================|| MAIN LAYOUT ||============================== //
 
@@ -22,7 +22,7 @@ const MainLayout = () => {
     const matchDownLG = useMediaQuery(theme.breakpoints.down('xl'));
     const dispatch = useDispatch();
 
-    const { drawerOpen } = useSelector((state) => state.menu);
+    const drawerOpen  = useSelector((state) => state.menu.drawerOpen);
 
     // drawer toggler
     const [open, setOpen] = useState(drawerOpen);

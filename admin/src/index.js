@@ -7,23 +7,27 @@ import 'simplebar/src/simplebar.css';
 
 // third-party
 import { Provider as ReduxProvider } from 'react-redux';
+import thunk from 'redux-thunk';
+import { createStore, applyMiddleware, compose } from 'redux';
+import {reducers} from './reducers';
 
 // apex-chart
 import 'assets/third-party/apex-chart.css';
 
 // project import
 import App from './App';
-import { store } from 'store';
+// import { store } from 'store';
 import reportWebVitals from './reportWebVitals';
 
 // ==============================|| MAIN - REACT DOM RENDER  ||============================== //
 
+const store = createStore(reducers, compose(applyMiddleware(thunk)));
 const container = document.getElementById('root');
 const root = createRoot(container); // createRoot(container!) if you use TypeScript
 root.render(
     <StrictMode>
         <ReduxProvider store={store}>
-            <BrowserRouter basename="/free">
+            <BrowserRouter>
                 <App />
             </BrowserRouter>
         </ReduxProvider>
