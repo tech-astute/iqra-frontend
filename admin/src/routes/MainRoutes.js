@@ -16,6 +16,7 @@ const Color = Loadable(lazy(() => import('pages/components-overview/Color')));
 const Shadow = Loadable(lazy(() => import('pages/components-overview/Shadow')));
 const AntIcons = Loadable(lazy(() => import('pages/components-overview/AntIcons')));
 const Article = Loadable(lazy(() => import('pages/article/Article')));
+const Editorial = Loadable(lazy(() => import('pages/editorial/Editorial')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -62,7 +63,7 @@ const MainRoutes = {
         },
         {
             path: 'editorial',
-            element: <Article />
+            element: <Editorial />
         },
         // {
         //     path: 'course',

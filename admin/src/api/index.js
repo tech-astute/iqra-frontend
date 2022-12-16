@@ -6,3 +6,6 @@ const api = axios.create({
 
 export const addArticle = (articleInfo) => api.post(`/add-articles`, articleInfo);
 export const getArticle = () => api.get(`/articles`);
+
+export const addEditorial = (editorialInfo) => api.post(`/add-editorials`, editorialInfo);
+export const getEditorial = () => api.get(`/editorials`);

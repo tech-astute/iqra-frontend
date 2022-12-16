@@ -21,7 +21,7 @@ import JoditEditor from 'jodit-react';
 import MainCard from 'components/MainCard';
 
 import { useDispatch } from 'react-redux';
-import { addArticle } from '../../actions/article/article';
+import { addEditorial } from '../../actions/editorial/editorial';
 // ==============================|| SAMPLE PAGE ||============================== //
 const copyStringToClipboard = function (str) {
     var el = document.createElement('textarea');
@@ -187,7 +187,7 @@ const Tags = ({ data, handleDelete }) => {
     );
 };
 
-const Article = () => {
+const Editorial = () => {
     const ITEM_HEIGHT = 48;
     const ITEM_PADDING_TOP = 8;
     const MenuProps = {
@@ -211,7 +211,7 @@ const Article = () => {
         'Sociology'
     ];
 
-    const subjectArray = [
+    const topicsArray = [
         'History',
         'Political Science',
         'Geography',
@@ -230,7 +230,7 @@ const Article = () => {
         optionD: ''
     });
 
-    const [article, setArticle] = useState({
+    const [editorial, setEditorial] = useState({
         heading: '',
         tags: '',
         prelims: '',
@@ -240,11 +240,11 @@ const Article = () => {
         question: '',
         options: '',
         answer: '',
-        subject: ''
+        topic: ''
     });
 
     const handleChange = (event) => {
-        setArticle({ ...article, [event.target.name]: event.target.value });
+        setEditorial({ ...editorial, [event.target.name]: event.target.value });
     };
 
     const handleOptionChange = (event) => {
@@ -255,8 +255,8 @@ const Article = () => {
     const [editor, setEditor] = useState();
     const tagRef = useRef();
 
-    const handleSubjectsChange = (event) => {
-        setArticle({ ...article, subject: event.target.value });
+    const handleTopicChange = (event) => {
+        setEditorial({ ...editorial, topic: event.target.value });
     };
 
     const handleDelete = (value) => {
@@ -275,21 +275,21 @@ const Article = () => {
     const handleSubmit = () => {
         try {
             const request = {
-                heading: article.heading,
+                heading: editorial.heading,
                 rating: 0,
                 tags: tags,
-                prelims: article.prelims,
-                mains: article.mains,
+                prelims: editorial.prelims,
+                mains: editorial.mains,
                 dataFromEditor: editor,
-                questionHeading: article.questionHeading,
-                question: article.question,
+                questionHeading: editorial.questionHeading,
+                question: editorial.question,
                 options: optionsData,
-                answer: article.answer,
-                subject: article.subject
+                answer: editorial.answer,
+                topic: editorial.topic
             };
             console.log(request);
-            dispatch(addArticle(request));
-            setArticle({
+            dispatch(addEditorial(request));
+            setEditorial({
                 heading: '',
                 tags: '',
                 prelims: '',
@@ -299,7 +299,7 @@ const Article = () => {
                 question: '',
                 options: '',
                 answer: '',
-                subject: ''
+                topic: ''
             });
             setTags([]);
             setEditor('');
@@ -315,7 +315,7 @@ const Article = () => {
     };
 
     return (
-        <MainCard title="Article">
+        <MainCard title="editorial">
             <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, mt: 2, mb: 2 }}>
                 <TextField
                     label="Heading"
@@ -324,20 +324,20 @@ const Article = () => {
                     sx={{ mr: { sm: 1 } }}
                     type="text"
                     name="heading"
-                    value={article.heading}
+                    value={editorial.heading}
                     onChange={handleChange}
                 />
                 <FormControl fullWidth sx={{ ml: { sm: 1 }, mt: { xs: 2, sm: 0 } }}>
-                    <InputLabel id="demo-simple-select-label">Subject</InputLabel>
+                    <InputLabel id="demo-simple-select-label">Topic</InputLabel>
                     <Select
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        value={article.subject}
-                        label="Subject"
-                        onChange={handleSubjectsChange}
+                        value={editorial.topic}
+                        label="Topic"
+                        onChange={handleTopicChange}
                     >
-                        {subjectArray.map((subject) => (
-                            <MenuItem value={subject}>{subject}</MenuItem>
+                        {topicsArray.map((topic) => (
+                            <MenuItem value={topic}>{topic}</MenuItem>
                         ))}
                     </Select>
                 </FormControl>
@@ -350,7 +350,7 @@ const Article = () => {
                     sx={{ mr: { sm: 1 }, backgroundColor: 'primary.lighter', borderRadius: '5px' }}
                     type="text"
                     name="prelims"
-                    value={article.prelims}
+                    value={editorial.prelims}
                     onChange={handleChange}
                 />
                 <TextField
@@ -360,7 +360,7 @@ const Article = () => {
                     sx={{ ml: { sm: 1 }, mt: { xs: 2, sm: 0 }, backgroundColor: 'primary.lighter', borderRadius: '5px' }}
                     type="text"
                     name="mains"
-                    value={article.mains}
+                    value={editorial.mains}
                     onChange={handleChange}
                 />
             </Box>
@@ -399,7 +399,7 @@ const Article = () => {
                     sx={{ mr: { sm: 1 } }}
                     type="text"
                     name="questionHeading"
-                    value={article.questionHeading}
+                    value={editorial.questionHeading}
                     onChange={handleChange}
                 />
                 <TextField
@@ -409,7 +409,7 @@ const Article = () => {
                     sx={{ ml: { sm: 1 }, mt: { xs: 2, sm: 0 } }}
                     type="text"
                     name="question"
-                    value={article.question}
+                    value={editorial.question}
                     onChange={handleChange}
                 />
             </Box>
@@ -465,7 +465,7 @@ const Article = () => {
                     sx={{ mr: { sm: 1 } }}
                     type="text"
                     name="answer"
-                    value={article.answer}
+                    value={editorial.answer}
                     onChange={handleChange}
                 />
                 <Box sx={{ width: '100%', ml: { sm: 1 } }} />
@@ -479,4 +479,4 @@ const Article = () => {
     );
 };
 
-export default Article;
+export default Editorial;
