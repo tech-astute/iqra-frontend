@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
 // material-ui
 import {
@@ -21,6 +21,8 @@ import {
 // third party
 import * as Yup from 'yup';
 import { Formik } from 'formik';
+import { useDispatch } from 'react-redux';
+import { signin } from '../../../actions/auth/auth';
 
 // project import
 import FirebaseSocial from './FirebaseSocial';
@@ -32,6 +34,8 @@ import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 // ============================|| FIREBASE - LOGIN ||============================ //
 
 const AuthLogin = () => {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [checked, setChecked] = React.useState(false);
 
     const [showPassword, setShowPassword] = React.useState(false);
@@ -47,8 +51,8 @@ const AuthLogin = () => {
         <>
             <Formik
                 initialValues={{
-                    email: 'info@codedthemes.com',
-                    password: '123456',
+                    email: '',
+                    password: '',
                     submit: null
                 }}
                 validationSchema={Yup.object().shape({
@@ -57,6 +61,8 @@ const AuthLogin = () => {
                 })}
                 onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
                     try {
+                        // NOTE: Make API request
+                        await dispatch(signin(values, navigate));
                         setStatus({ success: false });
                         setSubmitting(false);
                     } catch (err) {

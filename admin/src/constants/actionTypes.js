@@ -8,3 +8,8 @@ export const GET_ARTICLE = 'GET_ARTICLE';
 
 export const ADD_EDITORIAL = 'ADD_EDITORIAL';
 export const GET_EDITORIAL = 'GET_EDITORIAL';
+
+export const SIGNUP = 'SIGNUP';
+export const LOGIN = 'LOGIN';
+export const LOGOUT = 'LOGOUT';
+export const LOGGEDIN = 'LOGGEDIN';

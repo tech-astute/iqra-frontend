@@ -1,12 +1,32 @@
 import axios from 'axios';
 
 const api = axios.create({
-    // baseURL: 'http://localhost:5000/api/master',
-    baseURL: 'https://iqra-4t1k.onrender.com/api/master'
+    baseURL: 'http://localhost:5000/api/master',
+    // baseURL: 'https://iqra-4t1k.onrender.com/api/master'
 });
+
+api.interceptors.request.use((req) => {
+    if (localStorage.getItem('profile')) {
+        req.headers.Authorization = `Bearer ${JSON.parse(localStorage.getItem('profile')).accessToken}`;
+    }
+    return req;
+}, (error) => {
+    return Promise.reject(error);
+});
+
+
 
 export const addArticle = (articleInfo) => api.post(`/add-articles`, articleInfo);
 export const getArticle = () => api.get(`/articles`);
 
 export const addEditorial = (editorialInfo) => api.post(`/add-editorials`, editorialInfo);
 export const getEditorial = () => api.get(`/editorials`);
+
+export const signup = (userInfo) => api.post(`/signupAdmin`, userInfo);
+export const signin = (userInfo) => api.post(`/signinAdmin`, userInfo);
+export const signout = () => api.post(`/signoutAdmin`);
+export const admin = () => api.get(`/admin`, {
+    headers: {
+        Authorization: `Bearer ${JSON.parse(localStorage.getItem('profile')).accessToken}`
+    }
+});

@@ -2,7 +2,7 @@
     "name": "mantis-free-react-admin-template",
     "version": "1.1.0",
     "private": true,
-    "homepage": "https://mantisdashboard.io/free",
+    "homepage": "https://mantisdashboard.io/",
     "dependencies": {
         "@ant-design/colors": "^6.0.0",
         "@ant-design/icons": "^4.7.0",
@@ -51,7 +51,12 @@
         "start": "react-scripts start",
         "build": "react-scripts build",
         "test": "react-scripts test",
-        "eject": "react-scripts eject"
+        "eject": "react-scripts eject",
+        "lint": "eslint --ext .js,.jsx ./src",
+        "lint:fix": "eslint --fix --ext .js,.jsx ./src",
+        "clear-all": "rm -rf build node_modules",
+        "re-start": "rm -rf build node_modules && yarn install && yarn start",
+        "re-build": "rm -rf build node_modules && yarn install && yarn build"
     },
     "eslintConfig": {
         "extends": [
