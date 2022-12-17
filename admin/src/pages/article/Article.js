@@ -252,11 +252,16 @@ const Article = () => {
     };
 
     const [tags, setTags] = useState([]);
+    const [subjects, setSubjects] = useState([]);
     const [editor, setEditor] = useState();
     const tagRef = useRef();
 
     const handleSubjectsChange = (event) => {
-        setArticle({ ...article, subject: event.target.value });
+        const {
+            target: { value }
+        } = event;
+        setSubjects(typeof value === 'string' ? value.split(',') : value);
+        console.log(subjects);
     };
 
     const handleDelete = (value) => {
@@ -285,7 +290,7 @@ const Article = () => {
                 question: article.question,
                 options: optionsData,
                 answer: article.answer,
-                subject: article.subject
+                subject: subjects
             };
             console.log(request);
             dispatch(addArticle(request));
@@ -302,6 +307,7 @@ const Article = () => {
                 subject: ''
             });
             setTags([]);
+            setSubjects([]);
             setEditor('');
             setOptionsData({
                 optionA: '',
@@ -327,17 +333,32 @@ const Article = () => {
                     value={article.heading}
                     onChange={handleChange}
                 />
-                <FormControl fullWidth sx={{ ml: { sm: 1 }, mt: { xs: 2, sm: 0 } }}>
-                    <InputLabel id="demo-simple-select-label">Subject</InputLabel>
+                <FormControl
+                    fullWidth
+                    sx={{
+                        ml: { sm: 1 },
+                        mt: {
+                            xs: 2,
+                            sm: 0
+                        }
+                    }}
+                >
+                    <InputLabel id="demo-multiple-checkbox-label">Subjects</InputLabel>
                     <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={article.subject}
-                        label="Subject"
+                        labelId="demo-multiple-checkbox-label"
+                        id="demo-multiple-checkbox"
+                        multiple
+                        value={subjects}
                         onChange={handleSubjectsChange}
+                        input={<OutlinedInput label="Tags" />}
+                        renderValue={(selected) => selected.join(', ')}
+                        MenuProps={MenuProps}
                     >
-                        {subjectArray.map((subject) => (
-                            <MenuItem value={subject}>{subject}</MenuItem>
+                        {subjectArray.map((name) => (
+                            <MenuItem key={name} value={name}>
+                                <Checkbox checked={subjects.indexOf(name) > -1} />
+                                <ListItemText primary={name} />
+                            </MenuItem>
                         ))}
                     </Select>
                 </FormControl>
