@@ -17,12 +17,15 @@ import {
     Paper,
     Popper,
     Typography,
-    useMediaQuery
+    useMediaQuery,
+    Button
 } from '@mui/material';
 
 // project import
 import MainCard from 'components/MainCard';
 import Transitions from 'components/@extended/Transitions';
+import { useDispatch } from 'react-redux';
+import { logout } from 'actions/auth/auth';
 
 // assets
 import { BellOutlined, CloseOutlined, GiftOutlined, MessageOutlined, SettingOutlined } from '@ant-design/icons';
@@ -47,6 +50,7 @@ const actionSX = {
 // ==============================|| HEADER CONTENT - NOTIFICATION ||============================== //
 
 const Notification = () => {
+    const dispatch = useDispatch();
     const theme = useTheme();
     const matchesXs = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -68,7 +72,7 @@ const Notification = () => {
 
     return (
         <Box sx={{ flexShrink: 0, ml: 0.75 }}>
-            <IconButton
+            {/* <IconButton
                 disableRipple
                 color="secondary"
                 sx={{ color: 'text.primary', bgcolor: open ? iconBackColorOpen : iconBackColor }}
@@ -271,7 +275,19 @@ const Notification = () => {
                         </Paper>
                     </Transitions>
                 )}
-            </Popper>
+            </Popper> */}
+            <Button
+                variant="contained"
+                sx={{
+                    width: '100%',
+                    maxWidth: '200px',
+                }}
+                onClick={() => {
+                    dispatch(logout());
+                }}
+            >
+                LOGOUT
+            </Button>
         </Box>
     );
 };

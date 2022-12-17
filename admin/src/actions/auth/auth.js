@@ -23,9 +23,8 @@ export const signin = (formData, history) => async (dispatch) => {
 
 export const logout = (history) => async (dispatch) => {
     try {
-        const { data } = await api.signout();
-        dispatch({ type: LOGOUT, payload: data });
-        history.push('/');
+        dispatch({ type: LOGOUT});
+        history('/');
     } catch (error) {
         console.log(error);
     }
@@ -35,7 +34,7 @@ export const loggedIn = (history) => async (dispatch) => {
     try {
         const { data } = await api.admin();
         dispatch({ type: LOGGEDIN, payload: data });
-        history.push('/');
+        history('/');
     } catch (error) {
         console.log(error);
     }

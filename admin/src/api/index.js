@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: 'http://localhost:5000/api/master',
-    // baseURL: 'https://iqra-4t1k.onrender.com/api/master'
+    // baseURL: 'http://localhost:5000/api/master',
+    baseURL: 'https://iqra-twfr.onrender.com/api/master'
 });
 
 api.interceptors.request.use((req) => {

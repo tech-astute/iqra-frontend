@@ -9,7 +9,6 @@ const initialState = {
 export const authReducer = (state = initialState, action) => {
     switch(action.type) {
         case actionTypes.LOGIN:
-            console.log(action?.payload)
             localStorage.setItem('profile', JSON.stringify({ ...action?.payload }));
             return {
                 ...state,
@@ -21,7 +20,7 @@ export const authReducer = (state = initialState, action) => {
             localStorage.clear();
             return {
                 ...state,
-                auth: action.payload,
+                auth: null,
                 state: 'success',
                 error: null
             };
