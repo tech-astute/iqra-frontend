@@ -20,7 +20,7 @@ import JoditEditor from 'jodit-react';
 // project import
 import MainCard from 'components/MainCard';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addEditorial } from '../../actions/editorial/editorial';
 // ==============================|| SAMPLE PAGE ||============================== //
 const copyStringToClipboard = function (str) {
@@ -188,6 +188,8 @@ const Tags = ({ data, handleDelete }) => {
 };
 
 const Editorial = () => {
+    const topicsArray = (useSelector((state) => state.subject.subjects)) || [];
+
     const ITEM_HEIGHT = 48;
     const ITEM_PADDING_TOP = 8;
     const MenuProps = {
@@ -211,17 +213,17 @@ const Editorial = () => {
         'Sociology'
     ];
 
-    const topicsArray = [
-        'History',
-        'Political Science',
-        'Geography',
-        'Economics',
-        'Mathematics',
-        'Public Administration',
-        'Ethics',
-        'Chemistry',
-        'Sociology'
-    ];
+    // const topicsArray = [
+    //     'History',
+    //     'Political Science',
+    //     'Geography',
+    //     'Economics',
+    //     'Mathematics',
+    //     'Public Administration',
+    //     'Ethics',
+    //     'Chemistry',
+    //     'Sociology'
+    // ];
 
     const [optionsData, setOptionsData] = useState({
         optionA: '',
@@ -337,7 +339,7 @@ const Editorial = () => {
                         onChange={handleTopicChange}
                     >
                         {topicsArray.map((topic) => (
-                            <MenuItem value={topic}>{topic}</MenuItem>
+                            <MenuItem value={topic.subject}>{topic.subject}</MenuItem>
                         ))}
                     </Select>
                 </FormControl>

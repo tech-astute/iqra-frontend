@@ -20,7 +20,7 @@ import JoditEditor from 'jodit-react';
 // project import
 import MainCard from 'components/MainCard';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addArticle } from '../../actions/article/article';
 // ==============================|| SAMPLE PAGE ||============================== //
 const copyStringToClipboard = function (str) {
@@ -188,6 +188,10 @@ const Tags = ({ data, handleDelete }) => {
 };
 
 const Article = () => {
+
+    const subjectArray = (useSelector((state) => state.subject.subjects));
+    console.log(subjectArray);
+
     const ITEM_HEIGHT = 48;
     const ITEM_PADDING_TOP = 8;
     const MenuProps = {
@@ -211,17 +215,17 @@ const Article = () => {
         'Sociology'
     ];
 
-    const subjectArray = [
-        'History',
-        'Political Science',
-        'Geography',
-        'Economics',
-        'Mathematics',
-        'Public Administration',
-        'Ethics',
-        'Chemistry',
-        'Sociology'
-    ];
+    // const subjectArray = [
+    //     'History',
+    //     'Political Science',
+    //     'Geography',
+    //     'Economics',
+    //     'Mathematics',
+    //     'Public Administration',
+    //     'Ethics',
+    //     'Chemistry',
+    //     'Sociology'
+    // ];
 
     const [optionsData, setOptionsData] = useState({
         optionA: '',
@@ -354,10 +358,10 @@ const Article = () => {
                         renderValue={(selected) => selected.join(', ')}
                         MenuProps={MenuProps}
                     >
-                        {subjectArray.map((name) => (
-                            <MenuItem key={name} value={name}>
-                                <Checkbox checked={subjects.indexOf(name) > -1} />
-                                <ListItemText primary={name} />
+                        {subjectArray.map((subject) => (
+                            <MenuItem key={subject.id} value={subject.subject}>
+                                <Checkbox checked={subjects.indexOf(subject.subject) > -1} />
+                                <ListItemText primary={subject.subject} />
                             </MenuItem>
                         ))}
                     </Select>
