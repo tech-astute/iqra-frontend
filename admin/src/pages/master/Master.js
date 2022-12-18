@@ -2,6 +2,11 @@ import React, {useState} from 'react'
 import PropTypes from 'prop-types';
 import { Box, Tabs, Tab, Typography } from '@mui/material'
 import { useTheme } from '@mui/material/styles';
+import Category from './category/Category';
+import Medium from './medium/Medium';
+import Level from './level/Level';
+import Subject from './subject/Subject';
+import { useSelector } from 'react-redux';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -37,6 +42,10 @@ function TabPanel(props) {
   }
 
 const Master = () => {
+    const categories = useSelector(state => state.category.categories);
+    const subjects = useSelector(state => state.subject.subjects);
+    const mediums = useSelector(state => state.medium.mediums);
+    const levels = useSelector(state => state.level.levels);
     const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
@@ -72,16 +81,16 @@ const Master = () => {
       </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        Category
+        <Category categories={categories} />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Subject
+        <Subject subjects={subjects} />
       </TabPanel>
       <TabPanel value={value} index={2}>
-        Medium
+        <Medium mediums={mediums} />
       </TabPanel>
         <TabPanel value={value} index={3}>
-        Level
+         <Level levels={levels} />
         </TabPanel>
     </Box> 
   )
