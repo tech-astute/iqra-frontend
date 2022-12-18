@@ -216,7 +216,7 @@ const Category = (props) => {
                             />
                             <TableBody>
                                 {categoriesTable.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((custInfo) => {
-                                    const { id, category } = custInfo;
+                                    const { id, category, categoryimage } = custInfo;
                                     const isItemSelected = selected.indexOf(id) !== -1;
 
                                     return (

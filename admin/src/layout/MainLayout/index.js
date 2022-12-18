@@ -15,12 +15,30 @@ import Breadcrumbs from 'components/@extended/Breadcrumbs';
 // types
 import { openDrawer } from '../../actions/menu/menu';
 
+//redux import
+import { getCategories } from 'actions/master/category';
+import { getSubjects } from 'actions/master/subject';
+import { getMediums } from 'actions/master/medium';
+import { getLevels } from 'actions/master/level';
+
 // ==============================|| MAIN LAYOUT ||============================== //
 
 const MainLayout = () => {
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        const getReduxData = async () => {
+            await dispatch(getCategories());
+            await dispatch(getSubjects());
+            await dispatch(getMediums());
+            await dispatch(getLevels());
+        };
+        getReduxData();
+    }, [dispatch]);
+    
     const theme = useTheme();
     const matchDownLG = useMediaQuery(theme.breakpoints.down('xl'));
-    const dispatch = useDispatch();
 
     const drawerOpen  = useSelector((state) => state.menu.drawerOpen);
 
