@@ -14,6 +14,7 @@ const SamplePage = Loadable(lazy(() => import('pages/extra-pages/SamplePage')));
 const Article = Loadable(lazy(() => import('pages/article/Article')));
 const Editorial = Loadable(lazy(() => import('pages/editorial/Editorial')));
 const Master = Loadable(lazy(() => import('pages/master/Master')));
+const Course = Loadable(lazy(() => import('pages/course/Course')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -36,6 +37,10 @@ const MainRoutes = {
         {
             path: 'master',
             element: <Master />
+        },
+        {
+            path: 'course',
+            element: <Course />
         }
     ]
 };

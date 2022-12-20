@@ -9,6 +9,7 @@ import category from './master/category';
 import subject from './master/subject';
 import medium from './master/medium';
 import level from './master/level';
+import language from './master/language';
 
 export const reducers = combineReducers({
     menu,
@@ -19,4 +20,5 @@ export const reducers = combineReducers({
     subject,
     medium,
     level,
+    language
 });

@@ -6,6 +6,7 @@ import Category from './category/Category';
 import Medium from './medium/Medium';
 import Level from './level/Level';
 import Subject from './subject/Subject';
+import Language from './language/Language';
 import { useSelector } from 'react-redux';
 
 function TabPanel(props) {
@@ -46,6 +47,7 @@ const Master = () => {
     const subjects = useSelector(state => state.subject.subjects);
     const mediums = useSelector(state => state.medium.mediums);
     const levels = useSelector(state => state.level.levels);
+    const languages = useSelector(state => state.language.languages);
     const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
@@ -78,6 +80,7 @@ const Master = () => {
         <Tab label="Subject" {...a11yProps(1)}/>
         <Tab label="Medium" {...a11yProps(2)}/>
         <Tab label="Level" {...a11yProps(3)}/>
+        <Tab label="Language" {...a11yProps(4)}/>
       </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
@@ -91,6 +94,9 @@ const Master = () => {
       </TabPanel>
         <TabPanel value={value} index={3}>
          <Level levels={levels} />
+        </TabPanel>
+        <TabPanel value={value} index={4}>
+          <Language languages={languages} />
         </TabPanel>
     </Box> 
   )

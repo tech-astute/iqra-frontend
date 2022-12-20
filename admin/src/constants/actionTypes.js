@@ -25,3 +25,6 @@ export const GET_MEDIUM = 'GET_MEDIUM';
 
 export const ADD_LEVEL = 'ADD_LEVEL';
 export const GET_LEVEL = 'GET_LEVEL';
+
+export const ADD_LANGUAGE = 'ADD_LANGUAGE';
+export const GET_LANGUAGE = 'GET_LANGUAGE';
