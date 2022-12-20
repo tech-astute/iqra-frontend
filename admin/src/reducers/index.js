@@ -11,6 +11,10 @@ import medium from './master/medium';
 import level from './master/level';
 import language from './master/language';
 
+import course from './course/course';
+import liveclass from './course/liveClass';
+import content from './course/uploadContent';
+
 export const reducers = combineReducers({
     menu,
     article,
@@ -20,5 +24,8 @@ export const reducers = combineReducers({
     subject,
     medium,
     level,
-    language
+    language,
+    course,
+    liveclass,
+    content,
 });

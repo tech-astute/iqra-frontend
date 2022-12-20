@@ -28,3 +28,12 @@ export const GET_LEVEL = 'GET_LEVEL';
 
 export const ADD_LANGUAGE = 'ADD_LANGUAGE';
 export const GET_LANGUAGE = 'GET_LANGUAGE';
+
+export const ADD_COURSE = 'ADD_COURSE';
+export const GET_COURSE = 'GET_COURSE';
+
+export const ADD_LIVECLASS = 'ADD_LIVECLASS';
+export const GET_LIVECLASS = 'GET_LIVECLASS';
+
+export const ADD_UPLOADCONTENT = 'ADD_UPLOADCONTENT';
+export const GET_UPLOADCONTENT = 'GET_UPLOADCONTENT';

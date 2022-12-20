@@ -21,7 +21,7 @@ import JoditEditor from 'jodit-react';
 import MainCard from 'components/MainCard';
 
 import { useDispatch, useSelector } from 'react-redux';
-// import { addcourse } from 'actions/course/course';
+import { addCourse } from 'actions/course/course';
 // ==============================|| SAMPLE PAGE ||============================== //
 const copyStringToClipboard = function (str) {
     var el = document.createElement('textarea');
@@ -207,7 +207,6 @@ const AddCourse = (props) => {
         category: '',
         courseName: '',
         price: '',
-        overview: '',
         heading: '',
         description: '',
         lesson: '',
@@ -254,25 +253,39 @@ const AddCourse = (props) => {
 
     const handleSubmit = () => {
         try {
-            console.log(course);
-            // dispatch(addcourse(request));
-            // setCourse({
-            //     category: '',
-            //     courseName: '',
-            //     price: '',
-            //     overview: '',
-            //     heading: '',
-            //     description: '',
-            //     lesson: '',
-            //     level: '',
-            //     duration: '',
-            //     language: '',
-            //     subjects: ''
-            // });
+            const formData = new FormData();
+            formData.append('category', course.category);
+            formData.append('courseName', course.courseName);
+            formData.append('price', course.price);
+            formData.append('heading', course.heading);
+            formData.append('description', course.description);
+            formData.append('lesson', course.lesson);
+            formData.append('level', course.level);
+            formData.append('duration', course.duration);
+            formData.append('language', course.language);
+            formData.append('subjects', subjects);
+            formData.append('image', image);
+            console.log(formData);
+            dispatch(addCourse(formData));
+            setCourse({
+                category: '',
+                courseName: '',
+                price: '',
+                heading: '',
+                description: '',
+                lesson: '',
+                level: '',
+                duration: '',
+                language: '',
+                subjects: ''
+            });
+            setImage();
         } catch (error) {
             console.log(error);
         }
     };
+
+    // console.log(image)
 
     return (
         <>
@@ -329,25 +342,16 @@ const AddCourse = (props) => {
             </Box>
             <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, mt: 2, mb: 2 }}>
                 <TextField
-                    label="Overview"
-                    variant="outlined"
-                    fullWidth
-                    sx={{ mr: { sm: 1 } }}
-                    type="text"
-                    name="overview"
-                    value={course.overview}
-                    onChange={handleChange}
-                />
-                <TextField
                     label="Heading"
                     variant="outlined"
                     fullWidth
-                    sx={{ ml: { xs: 0, sm: 1 }, mt: { xs: 2, sm: 0 } }}
+                    sx={{ mr: { xs: 0, sm: 1 } }}
                     type="text"
                     name="heading"
                     value={course.heading}
                     onChange={handleChange}
                 />
+                <Box sx={{ width: '100%', ml: { xs: 0, sm: 1 } }} />
             </Box>
             <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, mt: 2, mb: 2 }}>
                 <TextField

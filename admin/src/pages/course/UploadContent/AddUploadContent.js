@@ -21,7 +21,7 @@ import JoditEditor from 'jodit-react';
 import MainCard from 'components/MainCard';
 
 import { useDispatch, useSelector } from 'react-redux';
-// import { adduploadContent } from 'actions/course/course';
+import { addUploadContent } from 'actions/course/uploadContent';
 // ==============================|| SAMPLE PAGE ||============================== //
 const copyStringToClipboard = function (str) {
     var el = document.createElement('textarea');
@@ -244,25 +244,29 @@ const UploadContent = (props) => {
         setUploadContent({ ...uploadContent, videoType: event.target.value });
     };
 
+    console.log(pdf);
     const dispatch = useDispatch();
 
     const handleSubmit = () => {
         try {
             console.log(uploadContent);
-            // dispatch(adduploadContent(request));
-            // setUploadContent({
-            //     category: '',
-            //     uploadContentName: '',
-            //     price: '',
-            //     overview: '',
-            //     heading: '',
-            //     description: '',
-            //     lesson: '',
-            //     level: '',
-            //     duration: '',
-            //     language: '',
-            //     subjects: ''
-            // });
+            const formData = new FormData();
+            formData.append('course', uploadContent.course);
+            formData.append('subject', uploadContent.subject);
+            formData.append('videoTitle', uploadContent.videoTitle);
+            formData.append('videoType', uploadContent.videoType);
+            formData.append('videoLink', uploadContent.videoLink);
+            formData.append('notes', pdf);
+            dispatch(addUploadContent(formData));
+            setUploadContent({
+                course: '',
+                subject: '',
+                videoTitle: '',
+                videoType: '',
+                videoLink: '',
+                notes: '',
+            });
+            setPDF();
         } catch (error) {
             console.log(error);
         }

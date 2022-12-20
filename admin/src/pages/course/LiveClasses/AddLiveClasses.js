@@ -21,6 +21,7 @@ import JoditEditor from 'jodit-react';
 import MainCard from 'components/MainCard';
 
 import { useDispatch, useSelector } from 'react-redux';
+import { addLiveClass } from 'actions/course/liveClass';
 // import { addliveClass } from 'actions/course/course';
 // ==============================|| SAMPLE PAGE ||============================== //
 const copyStringToClipboard = function (str) {
@@ -216,6 +217,7 @@ const LiveClasses = (props) => {
         title: '',
         videoType: '',
         videoLink: '',
+        instructorName: '',
     });
 
     const [image, setImage] = useState();
@@ -223,9 +225,6 @@ const LiveClasses = (props) => {
     const handleChange = (event) => {
         setLiveClass({ ...liveClass, [event.target.name]: event.target.value });
     };
-
-    const [subjects, setSubjects] = useState([]);
-    const tagRef = useRef();
 
     const handleCourseChange = (event) => {
         setLiveClass({ ...liveClass, course: event.target.value });
@@ -244,20 +243,23 @@ const LiveClasses = (props) => {
     const handleSubmit = () => {
         try {
             console.log(liveClass);
-            // dispatch(addliveClass(request));
-            // setLiveClass({
-            //     category: '',
-            //     liveClassName: '',
-            //     price: '',
-            //     overview: '',
-            //     heading: '',
-            //     description: '',
-            //     lesson: '',
-            //     level: '',
-            //     duration: '',
-            //     language: '',
-            //     subjects: ''
-            // });
+            const formData = new FormData();
+            formData.append('course', liveClass.course);
+            formData.append('thumbnail', image);
+            formData.append('title', liveClass.title);
+            formData.append('videoType', liveClass.videoType);
+            formData.append('videoLink', liveClass.videoLink);
+            formData.append('instructorName', liveClass.instructorName);
+            dispatch(addLiveClass(formData));
+            setLiveClass({
+                course: '',
+                thumbnail: '',
+                title: '',
+                videoType: '',
+                videoLink: '',
+                instructorName: '',
+            });
+            setImage();
         } catch (error) {
             console.log(error);
         }
@@ -331,7 +333,16 @@ const LiveClasses = (props) => {
                     value={liveClass.videoLink}
                     onChange={handleChange}
                 />
-                <Box sx={{width:'100%', ml:{xs:0,sm:1}}}/>
+                <TextField
+                    label="Instructor Name"
+                    variant="outlined"
+                    fullWidth
+                    sx={{ ml: { sm: 1 }, mt:{xs:2, sm:0} }}
+                    type="text"
+                    name="instructorName"
+                    value={liveClass.instructorName}
+                    onChange={handleChange}
+                />
             </Box>
             <Box>
                 <Button variant="contained" color="primary" type="submit" onClick={() => handleSubmit()}>
