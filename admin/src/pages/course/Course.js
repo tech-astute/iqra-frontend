@@ -40,15 +40,16 @@ const Course = () => {
     const mediums = useSelector((state) => state.medium.mediums);
     const levels = useSelector((state) => state.level.levels);
     const languages = useSelector((state) => state.language.languages);
-    // const courses = useSelector((state) => state.course.courses);
-    const courses = [
-        {
-            course: 'Maths',
-        },
-        {
-            course: 'Science',
-        },
-    ]
+    const courses = useSelector((state) => state.course.courses);
+    // console.log(courses);
+    // const courses = [
+    //     {
+    //         course: 'Maths',
+    //     },
+    //     {
+    //         course: 'Science',
+    //     },
+    // ]
 
     const [value, setValue] = useState(0);
 

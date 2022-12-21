@@ -21,6 +21,7 @@ import { getSubjects } from 'actions/master/subject';
 import { getMediums } from 'actions/master/medium';
 import { getLevels } from 'actions/master/level';
 import { getLanguages } from 'actions/master/language';
+import { getCourses } from 'actions/course/course';
 
 // ==============================|| MAIN LAYOUT ||============================== //
 
@@ -35,6 +36,7 @@ const MainLayout = () => {
             await dispatch(getMediums());
             await dispatch(getLevels());
             await dispatch(getLanguages());
+            await dispatch(getCourses());
         };
         getReduxData();
     }, [dispatch]);

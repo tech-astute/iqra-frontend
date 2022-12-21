@@ -285,7 +285,7 @@ const UploadContent = (props) => {
                         onChange={handleCourseChange}
                     >
                         {courses.map((course) => (
-                            <MenuItem value={course.course}>{course.course}</MenuItem>
+                            <MenuItem value={course.courseName}>{course.courseName}</MenuItem>
                         ))}
                     </Select>
                 </FormControl>
