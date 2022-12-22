@@ -2,7 +2,7 @@ import * as actionTypes from '../../constants/actionTypes';
 
 const initialState = {
     article: [],
-    state: 'idle',
+    state: 'idle', // idle, loading, success, error
     error: null
 };
 

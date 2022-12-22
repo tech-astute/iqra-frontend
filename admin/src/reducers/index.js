@@ -10,6 +10,8 @@ import subject from './master/subject';
 import medium from './master/medium';
 import level from './master/level';
 import language from './master/language';
+import importantIssue from './master/importantIssues';
+import weeklyNews from './master/weeklyNews';
 
 import course from './course/course';
 import liveclass from './course/liveClass';
@@ -28,4 +30,6 @@ export const reducers = combineReducers({
     course,
     liveclass,
     content,
+    importantIssue,
+    weeklyNews,
 });

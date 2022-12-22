@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 const api = axios.create({
-    // baseURL: 'http://localhost:5000/api/master',
-    baseURL: 'https://iqra-twfr.onrender.com/api/master'
+    baseURL: 'http://localhost:5000/api/master',
+    // baseURL: 'https://iqra-twfr.onrender.com/api/master'
 });
 
 api.interceptors.request.use((req) => {
@@ -54,3 +54,9 @@ export const getLiveclass = () => api.get(`/liveClasses`);
 
 export const addUploadcontent = (uploadcontentInfo) => api.post(`/add-contents`, uploadcontentInfo);
 export const getUploadcontent = () => api.get(`/contents`);
+
+export const addImportantIssue = (importantIssueInfo) => api.post(`/add-iICategories`, importantIssueInfo);
+export const getImportantIssue = () => api.get(`/iICategories`);
+
+export const addWeeklyNews = (weeklyNewsInfo) => api.post(`/add-wNCategories`, weeklyNewsInfo);
+export const getWeeklyNews = () => api.get(`/wNCategories`);

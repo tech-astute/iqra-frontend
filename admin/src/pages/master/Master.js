@@ -7,6 +7,8 @@ import Medium from './medium/Medium';
 import Level from './level/Level';
 import Subject from './subject/Subject';
 import Language from './language/Language';
+import ImportantIssue from './importantIssue/ImportantIssue';
+import WeeklyNews from './weeklyNews/WeeklyNews';
 import { useSelector } from 'react-redux';
 
 function TabPanel(props) {
@@ -48,6 +50,8 @@ const Master = () => {
     const mediums = useSelector(state => state.medium.mediums);
     const levels = useSelector(state => state.level.levels);
     const languages = useSelector(state => state.language.languages);
+    const importantIssues = useSelector(state => state.importantIssue.importantIssues);
+    const weeklyNews = useSelector(state => state.weeklyNews.weeklyNews);
     const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
@@ -81,6 +85,8 @@ const Master = () => {
         <Tab label="Medium" {...a11yProps(2)}/>
         <Tab label="Level" {...a11yProps(3)}/>
         <Tab label="Language" {...a11yProps(4)}/>
+        <Tab label="Important Issue" {...a11yProps(5)}/>
+        <Tab label="Weekly News" {...a11yProps(6)}/>
       </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
@@ -97,6 +103,12 @@ const Master = () => {
         </TabPanel>
         <TabPanel value={value} index={4}>
           <Language languages={languages} />
+        </TabPanel>
+        <TabPanel value={value} index={5}>
+          <ImportantIssue iICategorys={importantIssues}  />
+        </TabPanel>
+        <TabPanel value={value} index={6}>
+          <WeeklyNews wNCategorys={weeklyNews} />
         </TabPanel>
     </Box> 
   )

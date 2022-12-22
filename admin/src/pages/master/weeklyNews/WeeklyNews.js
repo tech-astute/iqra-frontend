@@ -26,12 +26,15 @@ import {
 } from '@mui/material';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { addCategory } from '../../../actions/master/category';
+// import { addStatus } from '../../actions/master/status';
 import Scrollbar from '../../../components/Scrollbar';
 import SearchNotFound from '../../../components/SearchNotFound';
 import { UserListHead, UserListToolbar, UserMoreMenu } from '../../../components/user';
+import { addWeeklyNews } from 'actions/master/weeklyNew';
 
-const TABLE_HEAD = [{ id: 'catgory', label: 'Category', alignRight: true }];
+const TABLE_HEAD = [
+    { id: 'wNCategory', label: 'Weekly News', alignRight: true },
+];
 
 // ----------------------------------------------------------------------
 
@@ -62,9 +65,9 @@ function applySortFilter(array, comparator, query) {
     return stabilizedThis.map((el) => el[0]);
 }
 
-const Category = (props) => {
-    const { categories } = props;
-    const [categoriesTable, setCategoriesTable] = useState(categories);
+const WeeklyNews = (props) => {
+    const { wNCategorys } = props;
+    const [wNCategorysTable, setwNCategorysTable] = useState(wNCategorys);
 
     const [page, setPage] = useState(0);
 
@@ -86,7 +89,7 @@ const Category = (props) => {
 
     const handleSelectAllClick = (event) => {
         if (event.target.checked) {
-            const newSelecteds = categoriesTable.map((n) => n.id);
+            const newSelecteds = wNCategorysTable.map((n) => n.id);
             setSelected(newSelecteds);
             return;
         }
@@ -121,29 +124,22 @@ const Category = (props) => {
         setFilterName(event.target.value);
     };
 
-    const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - categoriesTable.length) : 0;
+    const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - wNCategorysTable.length) : 0;
 
-    const filteredUsers = applySortFilter(categoriesTable, getComparator(order, orderBy), filterName);
+    const filteredUsers = applySortFilter(wNCategorysTable, getComparator(order, orderBy), filterName);
 
     const isUserNotFound = filteredUsers.length === 0;
 
-    const [category, setCategory] = useState({
-        category: ''
+    const [wNCategory, setwNCategory] = useState({
+        wNCategory: ''
     });
 
-    const [image, setImage] = useState();
-
-    const handleImageFile = (e) => {
-      setImage(e.target.files[0], '$$$$');
-      console.log(image);
-    };
-
     const handleChange = ({ currentTarget: input }) => {
-        setCategory({
-            ...category,
+        setwNCategory({
+            ...wNCategory,
             [input.name]: input.value
         });
-        console.log(category);
+        console.log(wNCategory);
     };
 
     const dispatch = useDispatch();
@@ -151,17 +147,13 @@ const Category = (props) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-          const formData = new FormData();
-          formData.append('category', category.category);
-          formData.append('categoryimage', image);
-          console.log(formData);
-          dispatch(addCategory(formData));
-          setCategoriesTable([...categoriesTable, formData]);
-          setCategory({
-              category:'',
-          });
-          setImage('');
-          alert('Category submitted successfully');
+            console.log(wNCategory);
+            await dispatch(addWeeklyNews(wNCategory));
+            setwNCategorysTable([...wNCategorysTable, wNCategory]);
+            setwNCategory({
+                wNCategory: ''
+            });
+            alert('wNCategory submitted successfully');
         } catch (error) {
             console.log(error);
         }
@@ -172,28 +164,16 @@ const Category = (props) => {
             <form onSubmit={handleSubmit}>
                 <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, mt: 2, mb: 2 }}>
                     <TextField
-                        label="Category"
+                        label="Weekly News"
                         variant="outlined"
                         fullWidth
                         sx={{ mr: { sm: 1 } }}
                         type="text"
-                        name="category"
-                        value={category.category}
+                        name="wNCategory"
+                        value={wNCategory.wNCategory}
                         onChange={handleChange}
                     />
-                    <Box sx={{width:'100%', ml:{sm:1}, mt: { xs: 2, sm: 0 } }}>
-                    <Button
-                        variant="outlined"
-                        fullWidth
-                        component="label"
-                        style={{ height: '37px' }}
-                        value={image}
-                        onChange={(e) => handleImageFile(e)}
-                    >
-                        Upload Thumbnail
-                        <input hidden accept="image/*" type="file" />
-                    </Button>
-                    </Box>
+                    <Box sx={{ width: '100%', ml: {sm:1} }} />
                 </Box>
                 <Box>
                     <Button variant="contained" color="primary" type="submit">
@@ -201,7 +181,7 @@ const Category = (props) => {
                     </Button>
                 </Box>
             </form>
-            <Box sx={{ mt: 2 }}>
+            <Box sx={{mt:2}}>
                 <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
 
                 <Scrollbar>
@@ -211,14 +191,14 @@ const Category = (props) => {
                                 order={order}
                                 orderBy={orderBy}
                                 headLabel={TABLE_HEAD}
-                                rowCount={categoriesTable.length}
+                                rowCount={wNCategorysTable.length}
                                 numSelected={selected.length}
                                 onRequestSort={handleRequestSort}
                                 onSelectAllClick={handleSelectAllClick}
                             />
                             <TableBody>
-                                {categoriesTable.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((custInfo) => {
-                                    const { id, category, categoryimage } = custInfo;
+                                {wNCategorysTable.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((custInfo) => {
+                                    const { id, wNCategory } = custInfo;
                                     const isItemSelected = selected.indexOf(id) !== -1;
 
                                     return (
@@ -236,7 +216,7 @@ const Category = (props) => {
                                             <TableCell align="center">
                                                 <Stack direction="row" alignItems="center" spacing={2}>
                                                     <Typography variant="subtitle2" noWrap>
-                                                        {category}
+                                                        {wNCategory}
                                                     </Typography>
                                                 </Stack>
                                             </TableCell>
@@ -266,7 +246,7 @@ const Category = (props) => {
                 <TablePagination
                     rowsPerPageOptions={[5, 10, 25]}
                     component="div"
-                    count={categoriesTable.length}
+                    count={wNCategorysTable.length}
                     rowsPerPage={rowsPerPage}
                     page={page}
                     onPageChange={handleChangePage}
@@ -277,4 +257,4 @@ const Category = (props) => {
     );
 };
 
-export default Category;
+export default WeeklyNews;

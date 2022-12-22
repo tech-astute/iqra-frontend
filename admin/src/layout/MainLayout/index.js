@@ -22,6 +22,8 @@ import { getMediums } from 'actions/master/medium';
 import { getLevels } from 'actions/master/level';
 import { getLanguages } from 'actions/master/language';
 import { getCourses } from 'actions/course/course';
+import { getImportantIssues } from 'actions/master/importantIssues';
+import { getWeeklyNews } from 'actions/master/weeklyNew';
 
 // ==============================|| MAIN LAYOUT ||============================== //
 
@@ -37,6 +39,8 @@ const MainLayout = () => {
             await dispatch(getLevels());
             await dispatch(getLanguages());
             await dispatch(getCourses());
+            await dispatch(getImportantIssues());
+            await dispatch(getWeeklyNews());
         };
         getReduxData();
     }, [dispatch]);
