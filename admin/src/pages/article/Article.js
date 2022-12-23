@@ -17,6 +17,9 @@ import {
 } from '@mui/material';
 import { Cancel } from '@mui/icons-material';
 import JoditEditor from 'jodit-react';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 // project import
 import MainCard from 'components/MainCard';
 
@@ -188,8 +191,9 @@ const Tags = ({ data, handleDelete }) => {
 };
 
 const Article = () => {
-
-    const subjectArray = (useSelector((state) => state.subject.subjects));
+    const weeklyNews = useSelector((state) => state.weeklyNews.weeklyNews);
+    console.log(weeklyNews);
+    const subjectArray = useSelector((state) => state.subject.subjects);
     console.log(subjectArray);
 
     const ITEM_HEIGHT = 48;
@@ -235,6 +239,8 @@ const Article = () => {
     });
 
     const [article, setArticle] = useState({
+        wNCategory: '',
+        timeStamp: null,
         heading: '',
         tags: '',
         prelims: '',
@@ -279,11 +285,18 @@ const Article = () => {
         tagRef.current.value = '';
     };
 
+    const handleWNCategoryChange = (e) => {
+        setArticle({ ...article, wNCategory: e.target.value });
+        console.log(article.wNCategory);
+    };
+
     const dispatch = useDispatch();
 
     const handleSubmit = () => {
         try {
             const request = {
+                wNCategory: article.wNCategory,
+                timeStamp: article.timeStamp,
                 heading: article.heading,
                 rating: 0,
                 tags: tags,
@@ -299,6 +312,8 @@ const Article = () => {
             console.log(request);
             dispatch(addArticle(request));
             setArticle({
+                wNCategory: '',
+                timeStamp: null,
                 heading: '',
                 tags: '',
                 prelims: '',
@@ -326,6 +341,40 @@ const Article = () => {
 
     return (
         <MainCard title="Article">
+            <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, mt: 2, mb: 2 }}>
+                <FormControl fullWidth sx={{ mr: { sm: 1 } }}>
+                    <InputLabel id="demo-simple-select-label">Weekly News </InputLabel>
+                    <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={article.wNCategory}
+                        label="Topic"
+                        onChange={handleWNCategoryChange}
+                    >
+                        {weeklyNews.map((weeklyNews) => (
+                            <MenuItem value={weeklyNews.wNCategory}>{weeklyNews.wNCategory}</MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+                <Box sx={{ width: '100%', ml: { sm: 1 }, mt: { xs: 2, sm: 0 } }}>
+                    <LocalizationProvider dateAdapter={AdapterDayjs} sx={{ maxWidth: '100%', width: '100%' }}>
+                        <DatePicker
+                            fullWidth
+                            label="Date"
+                            openTo="year"
+                            views={['year', 'month', 'day']}
+                            value={article.timeStamp}
+                            onChange={(newValue) => {
+                                setArticle({
+                                    ...article,
+                                    timeStamp: newValue
+                                });
+                            }}
+                            renderInput={(params) => <TextField {...params} fullWidth />}
+                        />
+                    </LocalizationProvider>
+                </Box>
+            </Box>
             <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, mt: 2, mb: 2 }}>
                 <TextField
                     label="Heading"

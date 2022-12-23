@@ -17,6 +17,9 @@ import {
 } from '@mui/material';
 import { Cancel } from '@mui/icons-material';
 import JoditEditor from 'jodit-react';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 // project import
 import MainCard from 'components/MainCard';
 
@@ -188,7 +191,8 @@ const Tags = ({ data, handleDelete }) => {
 };
 
 const Editorial = () => {
-    const topicsArray = (useSelector((state) => state.subject.subjects)) || [];
+    const topicsArray = useSelector((state) => state.subject.subjects) || [];
+    const importantIssues = useSelector((state) => state.importantIssue.importantIssues) || [];
 
     const ITEM_HEIGHT = 48;
     const ITEM_PADDING_TOP = 8;
@@ -213,18 +217,6 @@ const Editorial = () => {
         'Sociology'
     ];
 
-    // const topicsArray = [
-    //     'History',
-    //     'Political Science',
-    //     'Geography',
-    //     'Economics',
-    //     'Mathematics',
-    //     'Public Administration',
-    //     'Ethics',
-    //     'Chemistry',
-    //     'Sociology'
-    // ];
-
     const [optionsData, setOptionsData] = useState({
         optionA: '',
         optionB: '',
@@ -233,6 +225,8 @@ const Editorial = () => {
     });
 
     const [editorial, setEditorial] = useState({
+        iICategory: '',
+        timeStamp: null,
         heading: '',
         tags: '',
         prelims: '',
@@ -272,11 +266,17 @@ const Editorial = () => {
         tagRef.current.value = '';
     };
 
+    const handleImportantIssueChange = (event) => {
+        setEditorial({ ...editorial, iICategory: event.target.value });
+    };
+
     const dispatch = useDispatch();
 
     const handleSubmit = () => {
         try {
             const request = {
+                iICategory: editorial.iICategory,
+                timeStamp: editorial.timeStamp,
                 heading: editorial.heading,
                 rating: 0,
                 tags: tags,
@@ -292,6 +292,8 @@ const Editorial = () => {
             console.log(request);
             dispatch(addEditorial(request));
             setEditorial({
+                iICategory: '',
+                timeStamp: null,
                 heading: '',
                 tags: '',
                 prelims: '',
@@ -318,6 +320,40 @@ const Editorial = () => {
 
     return (
         <MainCard title="editorial">
+            <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, mt: 2, mb: 2 }}>
+                <FormControl fullWidth sx={{ mr: { sm: 1 } }}>
+                    <InputLabel id="demo-simple-select-label">Important Issue </InputLabel>
+                    <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={editorial.iICategory}
+                        label="Important Issue"
+                        onChange={handleImportantIssueChange}
+                    >
+                        {importantIssues.map((iICategory) => (
+                            <MenuItem value={iICategory.iICategory}>{iICategory.iICategory}</MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+                <Box sx={{ width: '100%', ml: { sm: 1 }, mt: { xs: 2, sm: 0 } }}>
+                    <LocalizationProvider dateAdapter={AdapterDayjs} sx={{ maxWidth: '100%', width: '100%' }}>
+                        <DatePicker
+                            fullWidth
+                            label="Date"
+                            openTo="year"
+                            views={['year', 'month', 'day']}
+                            value={editorial.timeStamp}
+                            onChange={(newValue) => {
+                                setEditorial({
+                                    ...editorial,
+                                    timeStamp: newValue
+                                });
+                            }}
+                            renderInput={(params) => <TextField {...params} fullWidth />}
+                        />
+                    </LocalizationProvider>
+                </Box>
+            </Box>
             <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, mt: 2, mb: 2 }}>
                 <TextField
                     label="Heading"
