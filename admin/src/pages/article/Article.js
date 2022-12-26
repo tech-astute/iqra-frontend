@@ -13,7 +13,8 @@ import {
     Checkbox,
     ListItemText,
     Button,
-    Stack
+    Stack,
+    NativeSelect
 } from '@mui/material';
 import { Cancel } from '@mui/icons-material';
 import JoditEditor from 'jodit-react';
@@ -245,6 +246,7 @@ const Article = () => {
         tags: '',
         prelims: '',
         mains: '',
+        source: '',
         editor: '',
         questionHeading: '',
         question: '',
@@ -302,6 +304,7 @@ const Article = () => {
                 tags: tags,
                 prelims: article.prelims,
                 mains: article.mains,
+                source: article.source,
                 dataFromEditor: editor,
                 questionHeading: article.questionHeading,
                 question: article.question,
@@ -318,6 +321,7 @@ const Article = () => {
                 tags: '',
                 prelims: '',
                 mains: '',
+                source: '',
                 editor: '',
                 questionHeading: '',
                 question: '',
@@ -343,10 +347,10 @@ const Article = () => {
         <MainCard title="Article">
             <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, mt: 2, mb: 2 }}>
                 <FormControl fullWidth sx={{ mr: { sm: 1 } }}>
-                    <InputLabel id="demo-simple-select-label">Weekly News </InputLabel>
+                    <InputLabel id="demo-simple-select-helper-label">Weekly News </InputLabel>
                     <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
+                    labelId="demo-simple-select-helper-label"
+          id="demo-simple-select-helper"
                         value={article.wNCategory}
                         label="Topic"
                         onChange={handleWNCategoryChange}
@@ -439,13 +443,13 @@ const Article = () => {
                 />
             </Box>
             <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, mt: 2, mb: 2 }}>
-                <Box sx={{ width: '100%', maxWidth: '100%' }}>
+                <Box sx={{ width: '100%', mr: {sm: 1} }}>
                     <form onSubmit={handleAddTags}>
                         <TextField
                             inputRef={tagRef}
                             label="Tags"
                             variant="outlined"
-                            placeholder={tags.length < 5 ? 'Enter tags' : ''}
+                            placeholder={tags.length < 3 ? 'Enter tags' : ''}
                             fullWidth
                             InputProps={{
                                 startAdornment: (
@@ -459,6 +463,16 @@ const Article = () => {
                         />
                     </form>
                 </Box>
+                <TextField
+                    label="Source"
+                    variant="outlined"
+                    fullWidth
+                    sx={{ ml: { sm: 1 }, mt: { xs: 2, sm: 0 } }}
+                    type="text"
+                    name="source"
+                    value={article.source}
+                    onChange={handleChange}
+                />
             </Box>
             <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, mt: 2, mb: 2 }}>
                 <Box sx={{ maxWidth: editorConfig.width, width: '100%', m: 0 }}>

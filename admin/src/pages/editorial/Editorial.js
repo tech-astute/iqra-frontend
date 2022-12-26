@@ -231,6 +231,7 @@ const Editorial = () => {
         tags: '',
         prelims: '',
         mains: '',
+        source: '',
         editor: '',
         questionHeading: '',
         question: '',
@@ -282,6 +283,7 @@ const Editorial = () => {
                 tags: tags,
                 prelims: editorial.prelims,
                 mains: editorial.mains,
+                source: editorial.source,
                 dataFromEditor: editor,
                 questionHeading: editorial.questionHeading,
                 question: editorial.question,
@@ -298,6 +300,7 @@ const Editorial = () => {
                 tags: '',
                 prelims: '',
                 mains: '',
+                source: '',
                 editor: '',
                 questionHeading: '',
                 question: '',
@@ -322,10 +325,10 @@ const Editorial = () => {
         <MainCard title="editorial">
             <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, mt: 2, mb: 2 }}>
                 <FormControl fullWidth sx={{ mr: { sm: 1 } }}>
-                    <InputLabel id="demo-simple-select-label">Important Issue </InputLabel>
+                    <InputLabel id="demo-simple-select-helper-label">Important Issue </InputLabel>
                     <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
+                        labelId="demo-simple-select-helper-label"
+          id="demo-simple-select-helper"
                         value={editorial.iICategory}
                         label="Important Issue"
                         onChange={handleImportantIssueChange}
@@ -403,7 +406,7 @@ const Editorial = () => {
                 />
             </Box>
             <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, mt: 2, mb: 2 }}>
-                <Box sx={{ width: '100%', maxWidth: '100%' }}>
+                <Box sx={{ width: '100%', mr: {sm:1} }}>
                     <form onSubmit={handleAddTags}>
                         <TextField
                             inputRef={tagRef}
@@ -423,6 +426,16 @@ const Editorial = () => {
                         />
                     </form>
                 </Box>
+                <TextField
+                    label="Source"
+                    variant="outlined"
+                    fullWidth
+                    sx={{ ml: { sm: 1 }, mt: { xs: 2, sm: 0 } }}
+                    type="text"
+                    name="source"
+                    value={editorial.source}
+                    onChange={handleChange}
+                />
             </Box>
             <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, mt: 2, mb: 2 }}>
                 <Box sx={{ maxWidth: editorConfig.width, width: '100%', m: 0 }}>

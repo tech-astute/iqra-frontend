@@ -52,6 +52,7 @@ const Master = () => {
     const languages = useSelector(state => state.language.languages);
     const importantIssues = useSelector(state => state.importantIssue.importantIssues);
     const weeklyNews = useSelector(state => state.weeklyNews.weeklyNews);
+    
     const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
